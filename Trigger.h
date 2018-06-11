@@ -40,7 +40,7 @@ int	  getPreviousL(Trigger * t);
 int	  getShake(Trigger * t);
 int   getRestR(Trigger * t);
 int   getRestL(Trigger * t);
-int getRealTrigger(Trigger * tX, Trigger * tY, Trigger * tZ, int *p, float *maxValue, int *counter);
+void getRealTrigger(Trigger * tX, Trigger * tY, Trigger * tZ, int *values, int *maxValue, int *maxAxis, int *counter);
 
 /*
 class TriggerClass {

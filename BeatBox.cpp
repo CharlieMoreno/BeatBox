@@ -24,7 +24,7 @@ RXD   <---> PIN 3
 */
 
 #include "BeatBox.h"
-#include "Accel.h"
+//#include "Accel.h"
 #include "Trigger.h"
 #include "Lights.h"
 #include "Taps.h"
@@ -33,6 +33,7 @@ RXD   <---> PIN 3
 #include "Play.h"
 #include "Log.h"
 #include "Debug.h"
+#include "Wire.h"
 #include "I2Cdev.h"
 #include "MPU6050.h"
 
@@ -79,7 +80,7 @@ void MPU6050setup() {
 	
 	// verify connection
 	Serial.println("Testing device connections...");
-	Serial.println(accelgyro.testConnection() ? "MPU6050 connection successful" : "MPU6050 connection failed");
+	Serial.println(accelgyro.testConnection() ? "MPU6050 connection successful\n" : "MPU6050 connection failed");
 }
 
 
@@ -201,7 +202,7 @@ int counter = 0;	// Contador usado para numerar los resultados en el monitor ser
 
 int axisTriggerValues[6] = {0, 0, 0, 0, 0, 0};	// getRealTrigger() guarda los valores de los disparos (yThreshold) en este vector [ejeX, ejeY, ejeZ] para después compararlos.
 
-float maxTriggerValue = 0;		// getRealTrigger() va a guardar en esta variable el máximo valor de los disparos de todos los ejes.
+int maxTriggerValue = 0;		// getRealTrigger() va a guardar en esta variable el máximo valor de los disparos de todos los ejes.
 
 int maxTriggerAxis = 0;			// Eje en el que se ha producido el impacto (mayor pico aceleración).
 
@@ -217,34 +218,31 @@ void loop() {
 	updateTrigger(&accY, ay);
 	updateTrigger(&accZ, az);
 	
-	/*Serial.print(getRealTrigger(&accX, &accY, &accZ, v));		//ESTO VA BIEN
-	Serial.print("\t");*/
 
 
-	int maxTriggerAxis = getRealTrigger(&accX, &accY, &accZ, axisTriggerValues, &maxTriggerValue, &counter);		// Devuelve el eje en el que se ha producido el impacto (mayor pico aceleración) y guarda en maxTriggerValue el valor de ese impacto, ó devuelve -1 mientras no haya impacto.
+	getRealTrigger(&accX, &accY, &accZ, axisTriggerValues, &maxTriggerValue, &maxTriggerAxis, &counter);		// Devuelve el eje en el que se ha producido el impacto (mayor pico aceleración) y guarda en maxTriggerValue el valor de ese impacto, ó devuelve -1 mientras no haya impacto.
 
-	// Comprobación de acierto por monitor serie:
-	if (maxTriggerAxis != -1){	// Si se ha producido un impacto, escribe el número del impacto, el eje y la magnitud de los impactos en los 6 ejes:
-
-		if (maxTriggerAxis == 0) { Serial.print(++counter); Serial.print("\t"); Serial.print(getCurrentL(&accX)); Serial.println("\tX+"); }
-		if (maxTriggerAxis == 1) { Serial.print(++counter); Serial.print("\t"); Serial.print(getCurrentR(&accX)); Serial.println("\tX-"); }
-		if (maxTriggerAxis == 2) { Serial.print(++counter); Serial.print("\t"); Serial.print(getCurrentL(&accY)); Serial.println("\tY+"); }
-		if (maxTriggerAxis == 3) { Serial.print(++counter); Serial.print("\t"); Serial.print(getCurrentR(&accY)); Serial.println("\tY-"); }
-		if (maxTriggerAxis == 4) { Serial.print(++counter); Serial.print("\t"); Serial.print(getCurrentL(&accZ)); Serial.println("\tZ+"); }
-		if (maxTriggerAxis == 5) { Serial.print(++counter); Serial.print("\t"); Serial.print(getCurrentR(&accZ)); Serial.println("\tZ-"); }
+	//Comprobación de acierto por monitor serie:
+	//if (maxTriggerAxis != -1){	// Si se ha producido un impacto, escribe el número del impacto, el eje y la magnitud de los impactos en los 6 ejes:	
+		//switch (maxTriggerAxis) {
+		//case 0: Serial.print(String(++counter) + "\t" + String(getCurrentL(&accX)) + "\tX+");
+		//case 1: Serial.print(String(++counter) + "\t" + String(getCurrentR(&accX)) + "\tX-");
+		//case 2: Serial.print(String(++counter) + "\t" + String(getCurrentL(&accY)) + "\tY+");
+		//case 3: Serial.print(String(++counter) + "\t" + String(getCurrentR(&accY)) + "\tY-");
+		//case 4: Serial.print(String(++counter) + "\t" + String(getCurrentL(&accZ)) + "\tZ+");
+		//case 5: Serial.print(String(++counter) + "\t" + String(getCurrentR(&accZ)) + "\tZ-");
+		//}
+	//}
 			
-		
-	}
-	
-	
+
 	
 	//logValues(ax, ay, az);
 
 	//detectShakes();
 			
-	//recordTaps();
+	recordTaps();
 
-	//playbackTaps();
+	playbackTaps();
 			
 	//lightsUpdate();
 			
@@ -255,7 +253,7 @@ void loop() {
 	maxLoopMillis = max(maxLoopMillis, loopMillis);
 	lastMillis = millis();
 			
-	//debugUpdate();
+	debugUpdate();
 	
 }
 

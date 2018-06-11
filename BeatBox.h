@@ -24,7 +24,7 @@ extern Trigger accX;
 extern Trigger accY;
 extern Trigger accZ;
 
-extern float maxTriggerValue;
+extern int maxTriggerValue;
 extern int maxTriggerAxis;
 
 #endif /* BEATBOX_H_ */

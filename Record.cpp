@@ -31,7 +31,8 @@ void recordTaps() {
 
 	// Configuración de beatLength Y Compás
 	if (identifying && recordingTaps) {													// Si se está en modo de identificación de tempo y compás y la grabación está habilitada:
-		if (getCurrentR(&accZ) > 0) {													// si hay un golpe en el eje Z,
+		//if (getCurrentR(&accZ) > 0) {													// si hay un golpe en el eje Z,
+		if (maxTriggerAxis != -1) {
 			if (!firstBeatIdentification) lastBeatIndex++;								// si no es el primer beat identificado, es que estamos tratando con el siguiente beat, por lo que se incrementa lastBeatIndex.
 			beatMillis[lastBeatIndex] = millis();										// se captura ese instante de tiempo,
 			if (compass > 0) {															// y si ya se ha registrado más de un beat, 
@@ -51,6 +52,13 @@ void recordTaps() {
 				identifying = false;
 				nextBeat   = nextBeat + beatLength;											// Análogo a nextCompass.
                                 setQuantization(getQuantization());
+				// DEBUG:
+				Serial.println("Compas definido!");
+				//Serial.println("\n beatLength = " + String(beatLength));
+				//Serial.println("compass = " + String(compass));
+				//Serial.println("compass length = " + String(compassLength));
+				//for (int i = 0; i<lastBeatIndex+1; i++) Serial.println("beatMillis[" + String(i) + "] = " + String(beatMillis[i]));
+				// END DEBUG
 			}
 		}
 	}
@@ -61,73 +69,13 @@ void recordTaps() {
 			taps[tapCounter].instrument = maxTriggerAxis;																																																																																																																																																					
 			taps[tapCounter].note = noteMapping[taps[tapCounter].instrument];
 			taps[tapCounter].timeInCompass = compassTime;
-			taps[tapCounter].velocity = maxTriggerValue;
+			taps[tapCounter].velocity = map(maxTriggerValue, 200, 500, 0, 127);
+			if (printingTaps) printTapInfo(tapCounter);
 			//sendMidiNoteOn(taps[tapCounter].note, taps[tapCounter].velocity);		// Lo he puesto en getRealTrigger()
 			if (recordingTaps) tapCounter++;
-			if (printingTaps) printTapInfo(tapCounter);
-		}
-				
-
-		//if (getCurrentR(&accX) > 0) {		
-			//lightsPulse(0, 50);
-			//taps[tapCounter].timeInCompass = compassTime;			
-			//taps[tapCounter].instrument = 0;
-			//taps[tapCounter].note = noteMapping[taps[tapCounter].instrument];				// Por ahora cada instrumento es una nota, pero igual más adelante cada instrumento puede tocar varias notas.
-			//taps[tapCounter].velocity = maxTriggerValue;
-			//if (printingTaps) printTapInfo(tapCounter);
-			//sendMidiNoteOn(taps[tapCounter].note, taps[tapCounter].velocity);
-			//if (recordingTaps) tapCounter++;
-		//}
-		//if (getCurrentL(&accX) > 0) {
-			//lightsPulse(1, 50);
-			//taps[tapCounter].timeInCompass = compassTime;
-			//taps[tapCounter].instrument = 1;
-			//taps[tapCounter].note = noteMapping[taps[tapCounter].instrument];
-			//taps[tapCounter].velocity = getCurrentL(&accX);
-			//if (printingTaps) printTapInfo(tapCounter);
-			//sendMidiNoteOn(taps[tapCounter].note, taps[tapCounter].velocity);
-			//if (recordingTaps) tapCounter++;
-		//}
-		//if (getCurrentR(&accY) > 0) {
-			//lightsPulse(2, 50);
-			//taps[tapCounter].timeInCompass = compassTime;
-			//taps[tapCounter].instrument = 2;
-			//taps[tapCounter].note = noteMapping[taps[tapCounter].instrument];
-			//taps[tapCounter].velocity = getCurrentR(&accY);
-			//if (printingTaps) printTapInfo(tapCounter);
-			//sendMidiNoteOn(taps[tapCounter].note, taps[tapCounter].velocity);
-			//if (recordingTaps) tapCounter++;
-		//}
-		//if (getCurrentL(&accY) > 0) {
-			//lightsPulse(3, 50);
-			//taps[tapCounter].timeInCompass = compassTime;
-			//taps[tapCounter].instrument = 3;
-			//taps[tapCounter].note = noteMapping[taps[tapCounter].instrument];
-			//taps[tapCounter].velocity = getCurrentL(&accY);
-			//if (printingTaps) printTapInfo(tapCounter);
-			//sendMidiNoteOn(taps[tapCounter].note, taps[tapCounter].velocity);
-			//if (recordingTaps) tapCounter++;
-		//}
-		//if (getCurrentR(&accZ) > 0) {
-			//lightsPulse(4, 50);
-			//taps[tapCounter].timeInCompass = compassTime;
-			//taps[tapCounter].instrument = 4;
-			//taps[tapCounter].note = noteMapping[taps[tapCounter].instrument];
-			//taps[tapCounter].velocity = getCurrentR(&accZ);
-			//if (printingTaps) printTapInfo(tapCounter);
-			//sendMidiNoteOn(taps[tapCounter].note, taps[tapCounter].velocity);
-			//if (recordingTaps) tapCounter++;
-		//}
-		//if (getCurrentL(&accZ) > 0) {
-			//lightsPulse(5, 50);
-			//taps[tapCounter].timeInCompass = compassTime;
-			//taps[tapCounter].instrument = 5;
-			//taps[tapCounter].note = noteMapping[taps[tapCounter].instrument];
-			//taps[tapCounter].velocity = getCurrentL(&accZ);
-			//if (printingTaps) printTapInfo(tapCounter);
-			//sendMidiNoteOn(taps[tapCounter].note, taps[tapCounter].velocity);
-			//if (recordingTaps) tapCounter++;
-		//}
+			
+			maxTriggerAxis = -1;	// Para que no vuelva a grabarse el mismo tap como uno nuevo.
+		}		
 	}
 }
 

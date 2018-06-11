@@ -30,7 +30,7 @@ void deleteCompass() {
 		whichTapsNow[i] = 0;
 	}
 
-	identifying    = false;		//**********ORIGINALMENTE TRUE. CAMBIADO SOLO PARA DEBUGUEAR*********************//
+	identifying    = true;		
 	compass        = 0;
 	beatLength     = 0;
 	lastBeatIndex  = 0;
@@ -122,13 +122,18 @@ int getTapsNumForInstrument(int instrument) {			// Número de taps que usan ese i
 }
 
 void printTapInfo(int tapIndex) {
+	//Serial.print("TapIndex: ");
 	Serial.print(tapIndex);
 	Serial.print(' ');
+	//Serial.print(" | Time: ");
 	Serial.print(getTapTime(tapIndex));
 	Serial.print(' ');
+	//Serial.print(" | Instrument: ");
 	Serial.print(getTapIntrument(tapIndex));
 	Serial.print(' ');
+	//Serial.print(" | Note: ");
 	Serial.print(getTapNote(tapIndex));
 	Serial.print(' ');
+	//Serial.print(" | Velocity: ");
 	Serial.println(getTapVelocity(tapIndex));
 }

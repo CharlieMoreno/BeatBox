@@ -154,7 +154,7 @@ int getRestR(Trigger * t) {
 }
 
 // Devuelve el eje que ha sufrido un mayor pico de aceleración:
-int getRealTrigger(Trigger * tX, Trigger * tY, Trigger * tZ, int *values, float *maxValue, int *counter) {			// Cuando se llama a la función en BeatBox.cpp, el puntero p es el vector axisTriggerValues.
+void getRealTrigger(Trigger * tX, Trigger * tY, Trigger * tZ, int *values, int *maxValue, int *maxAxis, int *counter) {			// Cuando se llama a la función en BeatBox.cpp, el puntero p es el vector axisTriggerValues.
 	
 	// triggerComparisonTime vale 0 la mayoría del tiempo. Cuando se produce un trigger, pasa a valer millis()+TRIGGER_COMPARISON_INTERVAL (en updateTrigger). Esto abre la ventana de registro de disparos.
 			
@@ -196,33 +196,37 @@ int getRealTrigger(Trigger * tX, Trigger * tY, Trigger * tZ, int *values, float 
 		
 		*maxValue = val;		// Dejo grabado el máximo valor en la variable global para que se pueda asignar a la velocidad en recordTaps().
 		
+		*maxAxis = axisNum;
+		
 		sendMidiNoteOn(axisNum, int(*maxValue));			// Se reproduce la nota
 		lightsPulse(axisNum, int(*maxValue) >> 5);			// y se ilumina la cara correspondiente.
 		
 		
 		
 		// ONLY FOR DEBUGGING PURPOSES...	
-		(*counter)++;
-		
-		if (axisNum == 0) { Serial.print(*counter); Serial.print("\t X+ \t"); Serial.println(maxTriggerValue);}
-		if (axisNum == 1) { Serial.print(*counter); Serial.print("\t X- \t"); Serial.println(maxTriggerValue);}
-		if (axisNum == 2) { Serial.print(*counter); Serial.print("\t Y+ \t"); Serial.println(maxTriggerValue);}
-		if (axisNum == 3) { Serial.print(*counter); Serial.print("\t Y- \t"); Serial.println(maxTriggerValue);}
-		if (axisNum == 4) { Serial.print(*counter); Serial.print("\t Z+ \t"); Serial.println(maxTriggerValue);}
-		if (axisNum == 5) { Serial.print(*counter); Serial.print("\t Z- \t"); Serial.println(maxTriggerValue);}
-		
-		Serial.println();
-		
-		for (int i=0; i<6; i++) { Serial.print("\t\t"); Serial.println(*(values+i)); }
-		Serial.println();
+			//(*counter)++;
+		//
+			//if (axisNum == 0) { Serial.print(*counter); Serial.print("\t X+ \t"); Serial.println(*maxValue);}
+			//if (axisNum == 1) { Serial.print(*counter); Serial.print("\t X- \t"); Serial.println(*maxValue);}
+			//if (axisNum == 2) { Serial.print(*counter); Serial.print("\t Y+ \t"); Serial.println(*maxValue);}
+			//if (axisNum == 3) { Serial.print(*counter); Serial.print("\t Y- \t"); Serial.println(*maxValue);}
+			//if (axisNum == 4) { Serial.print(*counter); Serial.print("\t Z+ \t"); Serial.println(*maxValue);}
+			//if (axisNum == 5) { Serial.print(*counter); Serial.print("\t Z- \t"); Serial.println(*maxValue);}
+		//
+			//Serial.println();
+		//
+			//for (int i=0; i<6; i++) { Serial.print("\t\t"); Serial.println(*(values+i)); }
+			//Serial.println();
 		// TILL HERE.
 		
 		// Reinicializo los axisTriggerValues:
 		for (int i=0; i<6; i++) { *(values+i) = 0; }
 			
-		return axisNum;			// Se devuelve el eje (y sentido) del mayor impacto.
+		//return axisNum;			// Se devuelve el eje (y sentido) del mayor impacto.
+		return;
 	}
 	
-	return -1;
-	
+	*maxAxis = -1;
+	//return -1;
+	return;
 }

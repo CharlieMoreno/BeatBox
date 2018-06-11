@@ -11,7 +11,7 @@ boolean printMeanAcc;
 boolean printLoopMillis;
 
 void debugSetup() {
-	printingTaps    = false;
+	printingTaps    = true;
 	printMeanAcc    = false;
 	printLoopMillis = false;
 }

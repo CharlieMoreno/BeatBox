@@ -11,7 +11,7 @@
 #include "Play.h"
 #include "Midi.h"
 
-unsigned char quantization;		// Quantization divider (1 full compass, 2 half compass, 4 quarters, 8 eighths,etc....)
+unsigned char quantization = 0;		// Quantization divider (1 full compass, 2 half compass, 4 quarters, 8 eighths,etc....)
 int  qTime;						// Quantization time in ms
 unsigned char qSent[6];			// Boolean value. True if instrument i has been already triggered for current quantization period
 unsigned char beatTriggered;    // Boolean value. True if current quantization period has already been triggered
@@ -58,12 +58,12 @@ void playbackTaps() {
 			lightsPulse(4, beatLength >> 5);				// y se ilumina la cara 4.
 		}
 		if (quantization) {									// Si la cuantización está activada,
-			if (m > nextCompass - (qTime >> 1)) {			// y si la barra temporal a sobrepasado el instante 'final_de_compás_menos_qTime_medios',
+			if (m > nextCompass - (qTime >> 1)) {			// y si la barra temporal ha sobrepasado el instante 'final_de_compás_menos_qTime_medios',
 				for(int i = 0; i < 6; i++) qSent[i] = 0;	// las banderas de reproducciones cuantizadas se ponen a cero.
 			}
 		}
 	}
-	compassTime = m - nextCompass + compassLength;		// = compassLenth - (nextCompass - m), es el insante en el que se encuentra la barra temporal referido al compás.
+	compassTime = m - nextCompass + compassLength;		// = compassLenth - (nextCompass - m), es el instante en el que se encuentra la barra temporal referido al compás.
 
 	// DISPARO Y LOOP:
 	if (quantization) {																		// Si la cuantización está activada:
