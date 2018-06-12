@@ -75,7 +75,7 @@ void playbackTaps() {
 			if (!beatTriggered) {																												// y todavía no se ha efectuado el disparo de los intrumentos, 
 				for (int i = 0; i < tapCounter; i++) {																							// Para todos los taps:
 					if (!qSent[taps[i].instrument]) {																							// Una vez se ha disparado un tap con un intrumento i, ya no se disparan más taps con ese mismo intrumento en este periodo de cuantización. Digamos que la cuantización unifica los diversos golpes de un mismo instrumento en un mismo periodo de cuantización.
-						if (taps[i].timeInCompass >= compassTime - (qTime >> 1) && taps[i].timeInCompass < compassTime + (qTime >> 1) ) {		// y si el tap se encuentra dentro del intervalo +-qTime/2 alrededor del cursor temporal (compassTime), 
+						if (taps[i].timeInCompass >= compassTime - (qTime >> 1) && taps[i].timeInCompass < compassTime + (qTime >> 1) || taps[i].timeInCompass - compassLength >= compassTime - (qTime >> 1)) {		// y si el tap se encuentra dentro del intervalo +-qTime/2 alrededor del cursor temporal (compassTime), incluídos en el 'or' los taps que están al final del compás y que entrarían en el -qTime/2 cuando compassTime vuelve a empezar desde cero,
 							sendMidiNoteOn(taps[i].note, taps[i].velocity);																		// se reproduce,
 							lightsPulse(taps[i].instrument, taps[i].velocity >> 5);																// se ilumina la cara correspodiente
 							qSent[taps[i].instrument] = true;																					// y se indica como ya disparado.
