@@ -167,15 +167,6 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Accel.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Accel.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Accel_ADXL345.cpp">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="BeatBox.cpp">
       <SubType>compile</SubType>
     </Compile>
