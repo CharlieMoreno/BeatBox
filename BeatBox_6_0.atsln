@@ -1,0 +1,20 @@
+
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "BeatBox", "BeatBox\BeatBox_6_0.cppproj", "{690F1A79-3CA8-4084-9E4F-135E0F8052C6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{690F1A79-3CA8-4084-9E4F-135E0F8052C6}.Debug|AVR.ActiveCfg = Debug|AVR
+		{690F1A79-3CA8-4084-9E4F-135E0F8052C6}.Debug|AVR.Build.0 = Debug|AVR
+		{690F1A79-3CA8-4084-9E4F-135E0F8052C6}.Release|AVR.ActiveCfg = Release|AVR
+		{690F1A79-3CA8-4084-9E4F-135E0F8052C6}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

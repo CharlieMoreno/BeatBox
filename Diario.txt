@@ -1,0 +1,71 @@
+15/01/2018	Apuntada la conexión de pines del MPU6050 y del HC-05 en el programa BeatBox.cpp.
+
+				* Comprobar funcionamiento de getRealTrigger().	[DONE]
+				* Idem para recordTaps().
+				* Darle una pensada a la cuantización. Ya tengo una idea en mente.
+
+16/01/2018	No funciona la subida a Arduino. Puede que estén jodidos los controladores de los puertos COM. [SOLVED]
+
+17/01/2018	En el Administrador de Dispositivos he visto que el controlador del COM3 está mal, y no lo he podido solucionar.
+			He reconfigurado el AVRdude en el AtmelStudio (Tools > External Tools...) para que use el puerto COM4. [FUNCIONA]
+			(El COM4 es el puerto USB de la izquierda más cerca de la pantalla)
+
+			getRealTrigger() no funciona bien con las últimas modificaciones. Con cada golpe, por el monitor serie se muestra
+			el eje X+ con los las lecturas de cada eje nulas. El momento de la reinicialización a cero de los axisTriggerValues
+			no debe de ser adecuado. Antes creo recordar que estaba fuera, en loop(), después de imprimir el resultado por
+			el monitor serie. Dale una pensada al flujo del código. [SOLVED]
+		  
+22/01/2018	Acabo de percatarme de que el struct Trigger está formado casi totalmente por integers, de modo que todos los 
+			resultados de los cálculos efectuados en updateTrigger() son truncados. ¿Podría ser un inconveniente? Por el 
+			momento, no parece, pero dejo la questión en el aire.
+
+			He movido la reinicialización de los axisTriggerValues al final de getRealTrigger(). Ahora ya funciona bien. Yuhu!
+
+23/01/2018	Tengo que añadir alguna condición para que la parte de grabación de taps de recordTaps() no grabe el mismo tap
+			como uno nuevo en cada vuelta de loop(). Tal vez podría separar la "Configuración de beatLength y Compás" y la
+			"Grabación de Taps" en dos funciones, y poner esta última en getRealTrigger(). Incluso sin estar en una función. 
+			A cholón. Simplificaría cosas de argumentos y tal... o no. Check it out.
+			[09/06/2018 EDIT]: He vuelto a examinar el código buscando este comportamiento y me ha parecido que no ocurre.
+
+20/05/2018	Creo que me rayé cuando escribí la anterior entrada. Con cada impacto, sólo hay una vuelta de loop en la que 
+			el valor de maxTriggerAxis es distinto a -1, de modo que sólo se graba un tap.
+
+04/06/2018	Esta semana he estado intentando importar a Atmel Studio un ejemplo de arduino que usa el Sparkfun Razor, pero ha sido en vano.
+		    No he conseguido terminar de solucionar los fallos que da, aunque voy a dejar aquí apuntados los paths de algunas
+			librerías necesarias para la importación:
+	
+			sam.h 	--> C:\Users\Charlie\AppData\Local\Arduino15\packages\arduino\tools\CMSIS-Atmel\1.1.0\CMSIS\Device\ATMEL
+			Wire.h 	--> C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src
+
+06/06/2018	Intensa tarde de porting con Yago. Hemos conseguido que el proyecto compile en Arduino IDE con la Sparkfun Razor, aunque claro,
+			ahora toca calibrar el acelerómetro y reajustar todos los parámetros necesarios para que se detecten los golpes.
+			Está en esta ubicación: C:\Users\Charlie\Documents\Arduino\BeatBox4\BeatBox4\BeatBoxArd
+			  
+			A partir de esta versión de Arduino, lo hemos importado a Atmel Studio 7. Para ello, hemos tenido que examinar el output de compilación del Arduino IDE
+			y apuntar las ubicaciones que incluye, que son las siguientes:
+			
+				Del Arduino Core:
+				C:\Users\Charlie\AppData\Local\Arduino15\packages\arduino\tools\CMSIS\4.5.0/CMSIS/Include/
+				C:\Users\Charlie\AppData\Local\Arduino15\packages\arduino\tools\CMSIS-Atmel\1.1.0/CMSIS/Device/ATMEL/
+				C:\Users\Charlie\AppData\Local\Arduino15\packages\SparkFun\hardware\samd\1.4.0\cores\arduino
+				C:\Users\Charlie\AppData\Local\Arduino15\packages\SparkFun\hardware\samd\1.4.0\libraries\Wire
+		
+				Específicas de la aplicación:
+				C:\Users\Charlie\AppData\Local\Arduino15\packages\SparkFun\hardware\samd\1.4.0\variants\SparkFun_9DoF_M0
+				C:\Users\Charlie\Documents\Arduino\libraries\SparkFun_MPU-9250-DMP_Arduino_Library-master\src
+				
+			He añadido todas ellas a través de Propiedades(Solution explorer) > Toolchain > Directories > C Compiler y C++ Compiler.
+			Después creo recordar que hubo que añadir al árbol de carpetas algunos archivos, pero ya no recuerdo cuáles. En cualquier caso, eran los que el 
+			compilador iba diciendo que le faltaban.
+			
+			Después hemos añadido un programador nuevo en External Tools basado en bossac.exe, siguiendo las instrucciones de esta página:
+			http://www.elecrom.com/program-arduino-due-atmel-studio/
+			
+			El problema es que tras cargar el programa en el micro, el puerto COM desaparece, por lo que no se puede usar el monitor serie.
+			Hemos dejado las opciones  del programador iguales a las del Arduino IDE, pero sin éxito. Hemos concluído que debe de haber algún
+			parámetro distinto en algún sitio que hace que no se mantenga o reabra el puerto COM. 
+			
+09/06/2018	He decidido ponerme con el setup del MPU6050 y Arduino Mega para avanzar con el software.			
+
+10/06/2018	No va mal la cosa. Parece que funciona la definción de tempo y compás, el metrónomo, la grabación de taps y su reproducción en loop. 
+
