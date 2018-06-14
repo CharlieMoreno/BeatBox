@@ -1,3 +1,0 @@
-
-Serial_MIDI_Converter_V2D
-Serial_MIDI_Converter_V2D.jar,core.jar,themidibus.jar,serial.jar,RXTXcomm.jar
