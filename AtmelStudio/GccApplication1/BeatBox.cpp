@@ -36,6 +36,7 @@ RXD   <---> PIN 3
 #include "Wire.h"
 #include "I2Cdev.h"
 #include "MPU6050.h"
+#include "Midi.h"
 
 #define N 25
 
@@ -61,7 +62,7 @@ void MPU6050setup() {
 	// initialize serial communication
 	// (38400 chosen because it works as well at 8MHz as it does at 16MHz, but
 	// it's really up to you depending on your project)
-	Serial.begin(2000000);
+	Serial.begin(57600);
 	
 	// initialize device
 	Serial.println("Initializing I2C devices...");
@@ -134,6 +135,17 @@ void setup() {
 	//attachPeriodicInterrupt(updateAccel, 4); // Update Accel ~250 times per second.		// Esto era para el acelerómetro que usaba Yago.
 	
 	//posBufferSetup();
+	
+	sendMidiNoteOn(noteMapping[7], 64);
+	
+	//int vel = 64;
+	//vel = map(vel, 200, 500, 0, 127);
+//
+	//Serial.print(MIDI_NOTE_ON | MIDI_CHANNEL, BIN);
+	//Serial.print("\t");
+	//Serial.print(noteMapping[7], BIN);
+	//Serial.print("\t");
+	//Serial.println(vel, BIN);
 
 }
 
