@@ -198,7 +198,7 @@ void getRealTrigger(Trigger * tX, Trigger * tY, Trigger * tZ, int *values, int *
 		
 		*maxAxis = axisNum;
 		
-		sendMidiNoteOn(axisNum, int(*maxValue));			// Se reproduce la nota
+		sendMidiNoteOn(axisNum, map(int(*maxValue),200,500,0,127));			// Se reproduce la nota
 		lightsPulse(axisNum, int(*maxValue) >> 5);			// y se ilumina la cara correspondiente.
 		
 		

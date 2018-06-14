@@ -26,13 +26,18 @@ void sendMidiNoteOff(int note) {
 
 void sendMidiNoteOn(int note, int vel) {
 	if (!midiMode) return;
-	vel = map(vel, 200, 500, 0, 127);
+	vel = constrain(vel, 0, 127);
 	note = constrain(note, 0, 127);
 	Serial.write(MIDI_NOTE_ON | MIDI_CHANNEL);
 	Serial.write(note);
 	Serial.write(vel);
 	//DEBUG:
-	//Serial.println(String(MIDI_NOTE_ON) + "\t" + String(MIDI_CHANNEL) + "\t" + String(note) + "\t" + String(vel));
+	//Serial.print("\t");
+	//Serial.print(MIDI_NOTE_ON | MIDI_CHANNEL, BIN);
+	//Serial.print("\t");
+	//Serial.print(note, BIN); 
+	//Serial.print("\t");
+	//Serial.println(vel, BIN);
 }
 
 void sendMidiProgramChange(int prog) {
