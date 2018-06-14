@@ -3,6 +3,14 @@
 
 #include "BeatBox.h"
 
+#define MIDI_CHANNEL        B00001001		//primeros 4 bits (lsb)
+#define MIDI_NOTE_OFF       B10000000		// últimos 4 bits (msb)
+#define MIDI_NOTE_ON        B10010000		// últimos 4 bits (msb)
+#define MIDI_PROG_CHANGE    B11000000		// últimos 4 bits (msb)
+#define MIDI_PITCH_WHEEL    B11100000
+#define MIDI_SYSEX          B11110000
+#define MIDI_END_SYSEX      B11110111
+
 extern boolean midiMode;
 
 
