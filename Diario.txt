@@ -92,5 +92,31 @@
 			
 			Si parpadea rápido, es que está esperando a ser conectado.
 			Si parpadea despacio a intervalos iguales entre  encendido y apagado, es que está en modo de configuración AT.
-			Si parpadea dos veces seguidas y se espera un segundo aprox, es que está conectad.
+			Si parpadea dos veces seguidas y se espera un par de segundos, es que está conectado.
+			
+			He conseguido que se comuniquen! Voy a describir el setup:
+			
+				Utilizo el módulo HC-05 que no está plastificado.
+				
+				VCC está conectado a los 5V del Arduino Mega, GND a GND, el TX al PIN 51 y el RX a un divisor de tensión, desde cuyo nodo
+				por un lado sale una resistencia de 680K a GND y, por otro, una de 330K al PIN 3 del Arduino Mega. Esto ha de hacerse así
+				para que el pin RX del HC-05 reciba 3,3V. Si recibiese 5V, que es lo que suministran los pines de la placa, se acabaría jodiendo. 
+				Además, ha empezado a funcionar la comunicación cuando he montado el divisor de tensión.
+				
+				El sketch de Arduino utilizado es el llamado "Sketch_prueba_HC05_bluetooth.ino" en 
+				C:\Users\Charlie\Documents\ETSII_UPM\TFG\Bluetooth\HC-05 FUNCIONAL\Sketch_prueba_HC05_bluetooth
+				Voy a subirlo a GitHub para tener un backup: C:\Users\Charlie\Documents\GitHub\BeatBox\HC-05 FUNCIONAL\Sketch_prueba_HC05_bluetooth
+				Los baudrate del puerto serie y bluetooth son 9600 baud.
+				
+				En el PuTTY está guardada la configuración bajo el nombre "Arduino". Usa el puerto COM9 (consultado en el administrador de dispositivos, 
+				en el que se ve por cierto que también se levanta el puerto COM10 para el HC-05, pero no he conseguido conectarme por ese) y una velocidad
+				de 9600 baud.
+				
+				Para configurar el HC-05, le quito VCC, pulso el botoncito que tiene y vuelvo a poner VCC. Cargo en la MEGA el sketch "Config_HC-05", 
+				en C:\Users\Charlie\Documents\GitHub\BeatBox\HC-05 FUNCIONAL\Config_HC-05
+				El baudrate del puerto serie con el HC-05 debe ser 38400 baud.
+				Al escribir en el monitor serie "at+uart?" devuelve por defecto "9600,0,0", siendo estos dos últimos números el stop bit y el parity bit.
+				He escrito "at+uart=115200,0,0" para cambiarle la velocidad del puerto serie a 115200 baud.
+				Los comandos AT vienen descritos en "Comandos AT.pdf", en C:\Users\Charlie\Documents\GitHub\BeatBox\HC-05 FUNCIONAL.
+				
 
