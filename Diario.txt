@@ -69,3 +69,28 @@
 
 10/06/2018	No va mal la cosa. Parece que funciona la definción de tempo y compás, el metrónomo, la grabación de taps y su reproducción en loop. 
 
+12/06/2018	He abordado el problema de la cuantización añadiendo mediante 'or' una condición adicional para incluir en el uno del compás los taps que	
+			están pegados a este por detrás, o lo que es lo mismo, al final del compás. No he comprobado si funciona.
+
+14/06/2018	Me he descargado hairlessMIDI y loopMIDI para poder leer los mensajes MIDI del puerto serie y
+			para enviarlos a un puerto MIDI virtual al que pueda conectarse una aplicación como Ableton Live.
+			
+			No están llegando correctamente los bytes del metrónomo, según hairlessMIDI.
+			
+16/06/2018	Por fin llegan correctamente los paquetes MIDI al PC. El problema ahora es la latencia, que además parece ser función del mensaje enviado, 
+			porque entre el 4 y el 1 del metrónomo transcurre menos tiempo que entre los otros beats. 
+			
+			La librería MIDIUSB de Arduino al parecer usa una función llamada flush() tras cada envío de mensaje para que dicho envío sea inmediato, 
+			ya que si no, y cito cuasi textualmente, al no ser USB un sistema de tiempo real, llegaría cada mensaje cuando le diera la gana, dicho rápido y mal.
+			El problema es que, al parecer, esta librería no soporta la Arduino Mega.
+			
+			He descargado otra librería llamada MIDI y los paquetes parece que los manda bien distribuidos en el tiempo. El problema es que en el código se mandan notas,
+			y el monitor del Hairless muestra mensajes de cambio de programa. Así que un pan como unas hostias. No he conseguido averiguar por qué.
+			
+			Me he puesto con el Bluetooth. He conseguido emparejar el módulo HC-05 que no está envuelto en plástico. He tenido que agregarlo desde la configuración
+			de bluetooth de Windows. 
+			
+			Si parpadea rápido, es que está esperando a ser conectado.
+			Si parpadea despacio a intervalos iguales entre  encendido y apagado, es que está en modo de configuración AT.
+			Si parpadea dos veces seguidas y se espera un segundo aprox, es que está conectad.
+
