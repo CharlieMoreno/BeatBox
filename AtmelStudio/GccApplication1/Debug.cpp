@@ -46,8 +46,10 @@ void printTiming() {
 	Serial.print(F("Compass: "));
 	Serial.print(getCompass());
 	Serial.print(F(" : "));
-	Serial.println(getBeatLength()*getCompass());
-	Serial.print(F("Quantization: "));
+	Serial.print(getBeatLength()*getCompass());
+	Serial.print(F(" : "));
+	Serial.println(compassLength);
+	Serial.print(F("Quantization & qTime: "));
 	Serial.print(getQuantization());
 	Serial.print(F(" : "));
 	Serial.println(getQTime());
