@@ -33,10 +33,10 @@ void recordTaps() {
 	if (identifying && recordingTaps) {													// Si se está en modo de identificación de tempo y compás y la grabación está habilitada:
 		//if (getCurrentR(&accZ) > 0) {													// si hay un golpe en el eje Z,
 		if (maxTriggerAxis != -1) {
-			if (!firstBeatIdentification) lastBeatIndex++;								// si no es el primer beat identificado, es que estamos tratando con el siguiente beat, por lo que se incrementa lastBeatIndex.
+			if (!firstBeatIdentification) lastBeatIndex++;								// si no es el primer beat identificado, es que estamos tratando con el siguiente beat, por lo que se incrementa lastBeatIndex (lastBeatIndex se pone a 0 en el setup).
 			beatMillis[lastBeatIndex] = millis();										// se captura ese instante de tiempo,
 			if (compass > 0) {															// y si ya se ha registrado más de un beat, 
-				beatLength = (int)(beatMillis[lastBeatIndex] - beatMillis[0])/compass;	// la duración de beat será el tiempo entre este golpe y el primero dividido entre los huecos (= nº de golpes - 1).
+				beatLength = (int)(beatMillis[lastBeatIndex] - beatMillis[0]) / compass;	// la duración de beat será el tiempo entre este golpe y el primero dividido entre los huecos (= nº de golpes - 1).
 			}																			// Si no, el beatLength (duración de una negra) seguirá valiendo 0.
 			compass++;																	// El compás pasa a tener otro beat.
 			compassLength = beatLength*compass;											// El compás dura lo que dura una negra por el número de negras hasta el momento
