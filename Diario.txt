@@ -98,10 +98,13 @@
 			
 				Utilizo el módulo HC-05 que no está plastificado.
 				
-				VCC está conectado a los 5V del Arduino Mega, GND a GND, el TX al PIN 51 y el RX a un divisor de tensión, desde cuyo nodo
+				VCC está conectado a los 5V del Arduino Mega, GND a GND, el TX al PIN 51 (***) y el RX a un divisor de tensión, desde cuyo nodo
 				por un lado sale una resistencia de 680K a GND y, por otro, una de 330K al PIN 3 del Arduino Mega. Esto ha de hacerse así
 				para que el pin RX del HC-05 reciba 3,3V. Si recibiese 5V, que es lo que suministran los pines de la placa, se acabaría jodiendo. 
 				Además, ha empezado a funcionar la comunicación cuando he montado el divisor de tensión.
+				
+				(***) Not all pins on the Mega and Mega 2560 support change interrupts, so only the following can be used for RX: 
+				10, 11, 12, 13, 14, 15, 50, 51, 52, 53, A8 (62), A9 (63), A10 (64), A11 (65), A12 (66), A13 (67), A14 (68), A15 (69). 
 				
 				El sketch de Arduino utilizado es el llamado "Sketch_prueba_HC05_bluetooth.ino" en 
 				C:\Users\Charlie\Documents\ETSII_UPM\TFG\Bluetooth\HC-05 FUNCIONAL\Sketch_prueba_HC05_bluetooth
@@ -119,4 +122,20 @@
 				He escrito "at+uart=115200,0,0" para cambiarle la velocidad del puerto serie a 115200 baud.
 				Los comandos AT vienen descritos en "Comandos AT.pdf", en C:\Users\Charlie\Documents\GitHub\BeatBox\HC-05 FUNCIONAL.
 				
-
+17/06/2018		Para integrar la funcionalidad Bluetooth en el código de BeatBox, he tenido que añadir la biblioteca SoftwareSerial. Para ello, en el árbol
+				de carpetas de ArduinoCore he añadido la carpeta "SoftwareSerial" tanto en la carpeta "include" como en "src", les he añadido el .h y el .cpp
+				copiándolos al directorio del proyecto y he tenido que añadir la ruta del .h (en relativo) en las propiedades de ArduinoCore y de GccApplication1, 
+				tanto en C como en C++. Compila bien.
+				
+18/06/2018		Ayer tenía problemas para utilizar los métodos del objeto BT de la clase SoftwareSerial fuera de BeatBox.cpp, pero ya he descubierto que hay que poner
+				en BeatBox.h la instanciación precedida de 'extern' y sin argumentos, es decir "extern SoftwareSerial BT", aparte de incluir SoftwareSerial.h.
+				En Midi.h y Midi.cpp he tenido que incluír BeatBox.h.
+				De esta manera, abro el puerto BT en BeatBox.cpp y puedo escribir en el puerto desde otros ficheros.
+				
+				He conseguido que llegue el metrónomo y algunos golpes al Ableton Live por Bluetooth! 
+				Pero hay algunas cosas que no me cuadran. Para empezar, a pesar de dar el valor 0 a PUERTOSERIE, se siguen mandando las notas MIDI por el puerto
+				serie del USB. Voy a probar a usar #if en vez de #ifdef.
+				A veces, uno de los golpes del metrónomo no es equidistante a los adyacentes.
+				Y por alguna razón, una de las veces no he conseguido grabar un bombo en el 1. No sé si ocurre siempre.
+				
+				
