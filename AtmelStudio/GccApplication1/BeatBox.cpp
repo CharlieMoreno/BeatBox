@@ -143,7 +143,8 @@ void setup() {
 	
 	//posBufferSetup();
 	
-
+	Serial.println("Defina el compas");
+	
 }
 
 
