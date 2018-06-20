@@ -20,12 +20,12 @@ void sendMidiNoteOff(int note) {
 	if (!midiMode) return;
 	note = constrain(note, 0, 127);
 	int vel = 0;
-	#ifdef PUERTOSERIE
+	#if PUERTOSERIE
 	Serial.write(MIDI_NOTE_OFF | MIDI_CHANNEL);		
 	Serial.write(note);
 	Serial.write(vel);
 	#endif
-	#ifdef BLUETOOTH
+	#if BLUETOOTH
 	BT.write(MIDI_NOTE_OFF | MIDI_CHANNEL);
 	BT.write(note);
 	BT.write(vel);
@@ -59,11 +59,11 @@ void sendMidiNoteOn(int note, int vel) {
 void sendMidiProgramChange(int prog) {
 	if (!midiMode) return;
 	prog = constrain(prog, 0, 127);
-	#ifdef PUERTOSERIE
+	#if PUERTOSERIE
 	Serial.write(MIDI_PROG_CHANGE | MIDI_CHANNEL);
 	Serial.write(prog);
 	#endif
-	#ifdef BLUETOOTH
+	#if BLUETOOTH
 	BT.write(MIDI_PROG_CHANGE | MIDI_CHANNEL);
 	BT.write(prog);
 	#endif
@@ -75,12 +75,12 @@ void sendMidiPitchWheel(int val) {
 	val = val + 8192;
 	int vall = val & 0x7F;
 	int valh = (val >> 7) & 0x7F;
-	#ifdef PUERTOSERIE
+	#if PUERTOSERIE
 	Serial.write(MIDI_PITCH_WHEEL | MIDI_CHANNEL);
 	Serial.write(vall);
 	Serial.write(valh);
 	#endif
-	#ifdef BLUETOOTH
+	#if BLUETOOTH
 	BT.write(MIDI_PITCH_WHEEL | MIDI_CHANNEL);
 	BT.write(vall);
 	BT.write(valh);
@@ -88,19 +88,19 @@ void sendMidiPitchWheel(int val) {
 }
 
 void startMidiSysEx() {
-	#ifdef PUERTOSERIE
+	#if PUERTOSERIE
     Serial.write((char)MIDI_SYSEX);					// TENGO CURIOSIDAD POR SABER CÓMO VA ESTO.
 	#endif
-	#ifdef BLUETOOTH
+	#if BLUETOOTH
 	BT.write((char)MIDI_SYSEX);
 	#endif
 }
 
 void endMidiSysEx() {
-	#ifdef PUERTOSERIE
+	#if PUERTOSERIE
     Serial.write((char)MIDI_END_SYSEX);
 	#endif
-	#ifdef BLUETOOTH
+	#if BLUETOOTH
 	BT.write((char)MIDI_END_SYSEX);
 	#endif
 }	
