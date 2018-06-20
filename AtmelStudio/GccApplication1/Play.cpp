@@ -11,7 +11,7 @@
 #include "Play.h"
 #include "Midi.h"
 
-unsigned char quantization = 0;		// Quantization divider (1 full compass, 2 half compass, 4 quarters, 8 eighths,etc....)
+unsigned char quantization = 0;		// Quantization divider (1 full compass, 2 half compass, 4 quarters, 8 eighths, 16 sixteenth, etc....)
 int  qTime;						// Quantization time in ms
 unsigned char qSent[6];			// Boolean value. True if instrument i has been already triggered for current quantization period
 unsigned char beatTriggered;    // Boolean value. True if current quantization period has already been triggered
@@ -63,6 +63,7 @@ void playbackTaps() {
 			}
 		}
 	}
+	
 	compassTime = m - nextCompass + compassLength;		// = compassLenth - (nextCompass - m), es el instante en el que se encuentra la barra temporal referido al compás.
 
 	// DISPARO Y LOOP:
@@ -71,15 +72,15 @@ void playbackTaps() {
 		if (currentRest < 0) {																// Si no se ha llegado al instante de disparo, 
 			beatTriggered = false;															// se indica que no se ha disparado nada de ese instante
 			for(int i = 0; i < 6; i++) qSent[i] = 0;										// y que ningun intrumento ha sido disparado aún.
-		} else {																																// Si ya se ha alcanzado o sobrepasado el instante de disparo
-			if (!beatTriggered) {																												// y todavía no se ha efectuado el disparo de los intrumentos, 
-				for (int i = 0; i < tapCounter; i++) {																							// Para todos los taps:
-					if (!qSent[taps[i].instrument]) {																							// Una vez se ha disparado un tap con un intrumento i, ya no se disparan más taps con ese mismo intrumento en este periodo de cuantización. Digamos que la cuantización unifica los diversos golpes de un mismo instrumento en un mismo periodo de cuantización.
-						if (taps[i].timeInCompass >= compassTime - (qTime >> 1) && taps[i].timeInCompass < compassTime + (qTime >> 1) || taps[i].timeInCompass - compassLength >= compassTime - (qTime >> 1)) {		// y si el tap se encuentra dentro del intervalo +-qTime/2 alrededor del cursor temporal (compassTime), incluídos en el 'or' los taps que están al final del compás y que entrarían en el -qTime/2 cuando compassTime vuelve a empezar desde cero,
-							sendMidiNoteOn(taps[i].note, taps[i].velocity);																		// se reproduce,
-							lightsPulse(taps[i].instrument, taps[i].velocity >> 5);																// se ilumina la cara correspodiente
-							qSent[taps[i].instrument] = true;																					// y se indica como ya disparado.
-							taps[i].sent = true;																								// Esta indicación es redundante, pero bueno, no hace daño.
+		} else {																			// Si ya se ha alcanzado o sobrepasado el instante de disparo
+			if (!beatTriggered) {															// y todavía no se ha efectuado el disparo de los intrumentos, 
+				for (int i = 0; i < tapCounter; i++) {										// Para todos los taps:
+					if (!qSent[taps[i].instrument]) {										// Una vez se ha disparado un tap con un intrumento i, ya no se disparan más taps con ese mismo intrumento en este periodo de cuantización. Digamos que la cuantización unifica los diversos golpes de un mismo instrumento en un mismo periodo de cuantización.
+						if ((taps[i].timeInCompass >= compassTime - (qTime >> 1) && taps[i].timeInCompass < compassTime + (qTime >> 1)) || taps[i].timeInCompass - compassLength >= compassTime - (qTime >> 1)) {		// y si el tap se encuentra dentro del intervalo +-qTime/2 alrededor del cursor temporal (compassTime), incluídos en el 'or' los taps que están al final del compás y que entrarían en el -qTime/2 cuando compassTime vuelve a empezar desde cero,
+							sendMidiNoteOn(taps[i].note, taps[i].velocity);					// se reproduce,
+							lightsPulse(taps[i].instrument, taps[i].velocity >> 5);			// se ilumina la cara correspodiente
+							qSent[taps[i].instrument] = true;								// y se indica como ya disparado.
+							taps[i].sent = true;											// Esta indicación es redundante, pero bueno, no hace daño.
 						}
 					} else {
 						taps[i].sent = true; // Redundante pero no hace daño.

@@ -4,6 +4,11 @@
 #include <Arduino.h>
 #include "Mean.h"
 #include "Trigger.h"
+#include <SoftwareSerial.h>
+
+
+#define BLUETOOTH	1
+#define PUERTOSERIE	0
 
 
 #define DATA_LOG
@@ -13,6 +18,9 @@
 
 
 // #define F(string_literal) (reinterpret_cast<const __FlashStringHelper *>(PSTR(string_literal)))
+
+// Creación del puerto Bluetooth:
+extern SoftwareSerial BT;	// RX | TX		(No todo los pines de la MEGA pueden funcionar como RX)
 
 extern unsigned long triggerComparisonTime;
 

@@ -37,9 +37,12 @@ RXD   <---> PIN 3
 #include "I2Cdev.h"
 #include "MPU6050.h"
 #include "Midi.h"
+//#include <SoftwareSerial.h>
 
 #define N 25
 
+// Creación del puerto Bluetooth:
+SoftwareSerial BT(51,3);	// RX | TX		(No todo los pines de la MEGA pueden funcionar como RX)
 
 // class default I2C address is 0x68
 // specific I2C addresses may be passed as a parameter here
@@ -47,6 +50,8 @@ RXD   <---> PIN 3
 // AD0 high = 0x69
 MPU6050 accelgyro;			// Declaración de clase tipo MPU6050 llamada accelgyro.
 //MPU6050 accelgyro(0x69);	// <-- use for AD0 high
+
+
 
 int16_t ax, ay, az;
 int16_t gx, gy, gz;
@@ -59,9 +64,7 @@ void MPU6050setup() {
 	// join I2C bus (I2Cdev library doesn't do this automatically)
 	Wire.begin();
 	
-	// initialize serial communication
-	// (38400 chosen because it works as well at 8MHz as it does at 16MHz, but
-	// it's really up to you depending on your project)
+	// Initialize USB serial communication
 	Serial.begin(115200);
 	
 	// initialize device
@@ -118,7 +121,11 @@ void setup() {
 	debugSetup();			 
 	
 	logSetup();
-
+	
+	#ifdef BLUETOOTH	
+	BT.begin(115200);
+	#endif
+	
 	MPU6050setup();		
 	
 	//initAccel();			// Esto era para el acelerómetro que usaba Yago.
@@ -136,16 +143,6 @@ void setup() {
 	
 	//posBufferSetup();
 	
-	sendMidiNoteOn(noteMapping[7], 64);
-	
-	//int vel = 64;
-	//vel = map(vel, 200, 500, 0, 127);
-//
-	//Serial.print(MIDI_NOTE_ON | MIDI_CHANNEL, BIN);
-	//Serial.print("\t");
-	//Serial.print(noteMapping[7], BIN);
-	//Serial.print("\t");
-	//Serial.println(vel, BIN);
 
 }
 
