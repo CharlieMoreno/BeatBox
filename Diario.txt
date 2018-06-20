@@ -134,8 +134,10 @@
 				
 				He conseguido que llegue el metrónomo y algunos golpes al Ableton Live por Bluetooth! 
 				Pero hay algunas cosas que no me cuadran. Para empezar, a pesar de dar el valor 0 a PUERTOSERIE, se siguen mandando las notas MIDI por el puerto
-				serie del USB. Voy a probar a usar #if en vez de #ifdef.
+				serie del USB. Voy a probar a usar #if en vez de #ifdef --> FUNCIONA
 				A veces, uno de los golpes del metrónomo no es equidistante a los adyacentes.
 				Y por alguna razón, una de las veces no he conseguido grabar un bombo en el 1. No sé si ocurre siempre.
+				
+20/06/2018		Solucionado lo de los #if, pero sigo sin arreglar el metrónomo. El algoritmo de cálculo de compassLength y beatLenth parecen correctos (85% seguro).
 				
 				
