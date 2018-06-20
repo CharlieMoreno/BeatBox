@@ -33,6 +33,9 @@ void deleteCompass() {
 	identifying    = true;		
 	compass        = 0;
 	beatLength     = 0;
+	compassLength  = 0;
+	nextCompass	   = 0;
+	nextBeat	   = 0;
 	lastBeatIndex  = 0;
 }
 
