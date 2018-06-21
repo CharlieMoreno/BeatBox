@@ -37,12 +37,12 @@ void sendMidiNoteOn(int note, int vel) {
 	if (!midiMode) return;
 	vel = constrain(vel, 0, 127);
 	note = constrain(note, 0, 127);
-	//#ifdef PUERTOSERIE
-	//Serial.write(MIDI_NOTE_ON | MIDI_CHANNEL);
-	//Serial.write(note);
-	//Serial.write(vel);
-	//#endif
-	#ifdef BLUETOOTH
+	#if PUERTOSERIE
+	Serial.write(MIDI_NOTE_ON | MIDI_CHANNEL);
+	Serial.write(note);
+	Serial.write(vel);
+	#endif
+	#if BLUETOOTH
 	BT.write(MIDI_NOTE_ON | MIDI_CHANNEL);
 	BT.write(note);
 	BT.write(vel);
@@ -69,23 +69,23 @@ void sendMidiProgramChange(int prog) {
 	#endif
 }
 
-void sendMidiPitchWheel(int val) {
-	if (!midiMode) return;
-	val = constrain(val, -8192, 8191);
-	val = val + 8192;
-	int vall = val & 0x7F;
-	int valh = (val >> 7) & 0x7F;
-	#if PUERTOSERIE
-	Serial.write(MIDI_PITCH_WHEEL | MIDI_CHANNEL);
-	Serial.write(vall);
-	Serial.write(valh);
-	#endif
-	#if BLUETOOTH
-	BT.write(MIDI_PITCH_WHEEL | MIDI_CHANNEL);
-	BT.write(vall);
-	BT.write(valh);
-	#endif
-}
+//void sendMidiPitchWheel(int val) {
+	//if (!midiMode) return;
+	//val = constrain(val, -8192, 8191);
+	//val = val + 8192;
+	//int vall = val & 0x7F;
+	//int valh = (val >> 7) & 0x7F;
+	//#if PUERTOSERIE
+	//Serial.write(MIDI_PITCH_WHEEL | MIDI_CHANNEL);
+	//Serial.write(vall);
+	//Serial.write(valh);
+	//#endif
+	//#if BLUETOOTH
+	//BT.write(MIDI_PITCH_WHEEL | MIDI_CHANNEL);
+	//BT.write(vall);
+	//BT.write(valh);
+	//#endif
+//}
 
 void startMidiSysEx() {
 	#if PUERTOSERIE

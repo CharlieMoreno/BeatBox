@@ -8,7 +8,7 @@
 
 
 #define BLUETOOTH	1
-#define PUERTOSERIE	0
+#define PUERTOSERIE	1
 
 
 #define DATA_LOG
